@@ -6,6 +6,7 @@ import { router } from './routes/index.tsx'
 import { ThemeProvider } from './providers/Theme.provider.tsx'
 import { Provider as ReduxProvider } from 'react-redux';
 import { store } from './redux/store.ts'
+import { Toaster } from "@/components/ui/sonner"
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ReduxProvider store={store}>
@@ -15,5 +16,6 @@ createRoot(document.getElementById('root')!).render(
         <RouterProvider router={router} />
       </ThemeProvider>
     </ReduxProvider>
+    <Toaster richColors />
   </StrictMode>,
 )
