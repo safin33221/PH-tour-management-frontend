@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Logo from "@/assets/icons/Logo"
 import { Button } from "@/components/ui/button"
 import {
@@ -13,6 +14,9 @@ import {
 } from "@/components/ui/popover"
 import { ModeToggle } from "./MoodToggler"
 import { Link } from "react-router"
+import { authApi, useLogoutMutation, useUserInfoQuery } from "@/redux/features/auth/auth.api"
+import { toast } from "sonner"
+import { useAppDispatch } from "@/redux/hook"
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -23,6 +27,26 @@ const navigationLinks = [
 ]
 
 export default function Navbar() {
+  const { data } = useUserInfoQuery(undefined)
+  const [logout] = useLogoutMutation()
+  const dispatch = useAppDispatch()
+
+  const handleLogout = async () => {
+    try {
+      await logout(undefined)
+
+
+      dispatch(authApi.util.resetApiState())
+      toast.success("Logout Successful")
+
+
+
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.message)
+    }
+  }
+  console.log(data);
   return (
     <header className="border-b ">
       <div className="flex h-16 container px-4 mx-auto items-center justify-between gap-4">
@@ -108,10 +132,21 @@ export default function Navbar() {
         {/* Right side */}
         <div className="flex items-center gap-2">
           <ModeToggle />
+          {
+            data?.data?.email ? (
+              <Button
+                onClick={handleLogout}
+                variant={`outline`} size="sm" className="text-sm">
+                LogOut
+              </Button>
+            ) : (
+              <Button asChild size="sm" className="text-sm">
+                <Link to={`/login`}>Login</Link>
+              </Button>
+            )
+          }
 
-          <Button asChild size="sm" className="text-sm">
-            <Link to={`/login`}>Login</Link>
-          </Button>
+
         </div>
       </div>
     </header>
