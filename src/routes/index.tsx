@@ -1,9 +1,8 @@
 import App from "@/App";
-import AdminLayout from "@/components/layouts/AdminLayout";
 import About from "@/pages/About";
-import Analysis from "@/pages/Analysis";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
+import Verify from "@/pages/Verify";
 import { createBrowserRouter } from "react-router";
 
 export const router = createBrowserRouter([
@@ -25,6 +24,11 @@ export const router = createBrowserRouter([
     {
         Component: Register,
         path: "/sing-up",
+
+    },
+    {
+        Component: Verify,
+        path: "/verify",
 
     },
 ])

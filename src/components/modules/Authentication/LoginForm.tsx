@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { useForm } from "react-hook-form"
 import Password from "@/components/ui/Password"
@@ -19,6 +19,7 @@ export function LoginForm({
     ...props
 }: React.HtmlHTMLAttributes<HTMLElement>) {
     const [login] = useLoginMutation()
+    const navigate = useNavigate()
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -31,14 +32,27 @@ export function LoginForm({
             email: data.email,
             password: data.password
         }
+        console.log(userInfo);
+
         try {
             const result = await login(userInfo).unwrap()
             toast.success(`Welcome ${result?.data?.user?.name} `)
             console.log(result);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
-            toast.error(`Login failed. ${error?.data?.message}.`)
             console.log(error);
+            if (error?.data?.message === "Password does not match") {
+                toast.error("Password does not match")
+
+            }
+            else if (error?.data?.message === "User is not verified") {
+                toast.error("You are not verified")
+                navigate('/verify', { state: data.email })
+            }
+            else {
+
+                toast.error(`Login failed. ${error?.data?.message}.`)
+            }
         }
     }
     return (
