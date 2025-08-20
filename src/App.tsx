@@ -1,5 +1,5 @@
-import { Outlet } from "react-router"
-import CommonLayout from "./components/layouts/CommonLayout"
+import { Outlet } from "react-router";
+import CommonLayout from "./components/layouts/CommonLayout";
 
 
 

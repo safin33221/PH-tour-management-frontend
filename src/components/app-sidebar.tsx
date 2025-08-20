@@ -14,36 +14,16 @@ import {
 } from "@/components/ui/sidebar"
 import Logo from "@/assets/icons/Logo"
 import { Link } from "react-router"
+import getSidebarItems from "@/utils/getSidebarItems"
+import { useUserInfoQuery } from "@/redux/features/auth/auth.api"
 
 // This is sample data.
-const data = {
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "#",
-      items: [
-        {
-          title: "Analytic",
-          url: "/admin/analysis",
-        },
-
-      ],
-    },
-    {
-      title: "Tour Management",
-      url: "#",
-      items: [
-        {
-          title: "Add Tour",
-          url: "/admin/add-tour",
-        },
-
-      ],
-    }
-  ],
-}
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: userData } = useUserInfoQuery(undefined)
+  const data = {
+    navMain: getSidebarItems(userData?.data?.role)
+  }
   return (
     <Sidebar {...props}>
       <SidebarHeader>
