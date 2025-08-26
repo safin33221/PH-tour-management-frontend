@@ -11,9 +11,11 @@ import {
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { useAddDivisionMutation } from "@/redux/features/division/division.api"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 import { z } from "zod"
 
 const typeSchema = z.object({
@@ -25,28 +27,35 @@ const typeSchema = z.object({
 
 
 export function AddDivisionModal() {
-
+    const [addDivision] = useAddDivisionMutation()
     const [image, setImage] = useState<File | null>(null)
-    console.log(image);
+    const [open, setOpen] = useState(false)
     const form = useForm<z.infer<typeof typeSchema>>({
         resolver: zodResolver(typeSchema)
     })
 
     const onSubmit = async (data: z.infer<typeof typeSchema>) => {
+        const formData = new FormData()
+        formData.append("data", JSON.stringify(data))
+        formData.append("file", image as File)
+        const toastId = toast.loading("Division Creating...")
         try {
-            const formData = new FormData()
-            formData.append("data", JSON.stringify(data))
-            formData.append("file", image as File)
-
+            const res = await addDivision(formData).unwrap()
+            if (res.success) {
+                toast.success("Division Created", { id: toastId })
+                setOpen(false)
+            }
             console.log(data);
+            setOpen(false)
         }
         catch (error) {
+            toast.error("Division Created fail", { id: toastId })
             console.log(error);
 
         }
     }
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <form>
                 <DialogTrigger asChild>
                     <Button variant="outline">Add Tour Type</Button>
