@@ -9,7 +9,7 @@ export const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
     function (config) {
         // Do something before request is sent
-        console.log("axios config", config);
+        // console.log("axios config", config);
         return config;
     }, function (error) {
         // Do something with request error
@@ -23,7 +23,7 @@ axiosInstance.interceptors.response.use(
     function onFulfilled(response) {
         // Any status code that lie within the range of 2xx cause this function to trigger
         // Do something with response data
-        console.log("axios config", response)
+        // console.log("axios config", response)
         return response;
     }, function onRejected(error) {
         // Any status codes that falls outside the range of 2xx cause this function to trigger
