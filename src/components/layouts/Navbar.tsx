@@ -135,7 +135,7 @@ export default function Navbar() {
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
                 {navigationLinks.map((link, index) => (
-                  <>
+                  <div  key={index}>
                     {
                       link.role === "PUBLIC" && (
                         <NavigationMenuItem key={index} className="w-full">
@@ -150,7 +150,7 @@ export default function Navbar() {
                     }
                     {
                       link.role === data?.data?.role && (
-                        <NavigationMenuItem key={index} className="w-full">
+                        <NavigationMenuItem className="w-full">
                           <NavigationMenuLink
                             asChild
                             className="py-1.5"
@@ -160,7 +160,7 @@ export default function Navbar() {
                         </NavigationMenuItem>
                       )
                     }
-                  </>
+                  </div>
                 ))}
               </NavigationMenuList>
             </NavigationMenu>

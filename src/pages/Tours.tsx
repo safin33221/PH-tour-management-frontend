@@ -12,7 +12,7 @@ export default function Tours() {
     const division = searchParams.get("division") || undefined;
     const tourType = searchParams.get("tourType") || undefined;
 
-    const { data } = useGetAllToursQuery(undefined)
+    const { data, isLoading } = useGetAllToursQuery(undefined)
     console.log(data);
 
     return (
@@ -22,7 +22,7 @@ export default function Tours() {
             </div>
 
             <div className="col-span-9 w-full">
-                {data?.data?.map((item) => (
+                {data?.map((item) => (
                     <div
                         key={item.slug}
                         className="border border-muted rounded-lg shadow-md overflow-hidden mb-6 flex"
