@@ -75,8 +75,8 @@ const formSchema = z.object({
 export default function AddTour() {
   const [images, setImages] = useState<(File | FileMetadata)[] | []>([]);
 
-  const { data: divisionData, isLoading: divisionLoading } = useGetDivisionQuery(undefined);
-  const { data: tourTypeData } = useGetTourTypeQuery(undefined);
+  const { data: divisionData, isLoading: divisionLoading } = useGetDivisionQuery({ limit: 1000, fields: "_id, name" });
+  const { data: tourTypeData } = useGetTourTypeQuery({ limit: 1000, fields: "_id, name" });
   const [addTour] = useAddTourMutation();
 
   const divisionOptions = divisionData?.data?.map(
